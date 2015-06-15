@@ -243,6 +243,8 @@ class MlpseController extends Controller
          }
             
        }
+
+       return TRUE;
             
     }
     protected function grab_data($val){
