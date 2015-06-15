@@ -184,6 +184,7 @@ class MlpseController extends Controller
                 }               
        
                 if($model_details->save()){
+                    echo ".";
                       $this->inputDetailProfile($model_details->id,$data_lpse_detail);
               }
               
@@ -237,6 +238,7 @@ class MlpseController extends Controller
             }
 
            $ModelLpseDetailProfile->save();
+            echo ".";
             
          }
             
