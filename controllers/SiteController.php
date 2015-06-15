@@ -7,6 +7,7 @@ use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
 
+
 /**
  * Site controller
  */
@@ -57,7 +58,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-
+   
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
@@ -80,4 +81,6 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+   
 }
