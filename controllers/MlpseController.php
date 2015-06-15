@@ -130,7 +130,7 @@ class MlpseController extends Controller
         $model->ed = date('Y-m-d H:i:s');
         $model->save();
         $list_data = $this->grab_data($model);
-
+        set_time_limit(600); 
         foreach($list_data['name_lelang'] as $key => $val){
             foreach ($val as $k => $name){
                 $data_lpse_detail = array(     
