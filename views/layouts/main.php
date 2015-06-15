@@ -71,8 +71,8 @@ AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left">&copy; Cubiconia.com <?= date('Y') ?></p>
+        <p class="pull-right">e:info@cubiconia.com|ph. 0811 611 5500</p>
         </div>
     </footer>
 
