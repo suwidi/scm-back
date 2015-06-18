@@ -65,7 +65,7 @@ class MlpseController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {
+    {   
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -124,19 +124,25 @@ class MlpseController extends Controller
      /**
      *
      */
-    public function actionGrab($id)
+    public function actionGrab($id=0)
     {
-        $model= $this->findModel($id);
+       
+        $data_post = ($id != 0)?array('selection'=>array($id)):Yii::$app->request->post();
+
+        foreach ($data_post['selection'] as $key => $lpse_id) {
+       // echo $lpse_id;die;
+        $model= $this->findModel($lpse_id);
         $model->ed = date('Y-m-d H:i:s');
         $model->save();
         $list_data = $this->grab_data($model);
-        set_time_limit(600); 
+        set_time_limit(0); 
+        if($list_data){
         foreach($list_data['name_lelang'] as $key => $val){
             foreach ($val as $k => $name){
                 $data_lpse_detail = array(     
                         'edit_by'=>2,
                         'date_now'=>date('Y-m-d H:i:s'),
-                        'lpse_id' => $id,                   
+                        'lpse_id' => $lpse_id,                   
                         'name' => $name->nodeValue,
                         'orig_lpse_id' =>$model->id_lpse_inaproc,
                         'orig_lelang_id' => $list_data['id'][$key][$k],
@@ -189,13 +195,17 @@ class MlpseController extends Controller
               }
               
             }
+         }
         }
+       
+           
+        } 
 
     if(Yii::$app->request->referrer){
         return $this->redirect(Yii::$app->request->referrer);
-    }else{
-        return $this->goHome();
-    }
+        }else{
+            return $this->goHome();
+        }
 
     }
 
@@ -249,15 +259,15 @@ class MlpseController extends Controller
     }
     protected function grab_data($val){
     
-            libxml_use_internal_errors(true);
-            $c = file_get_contents($val['link']);
+        libxml_use_internal_errors(true);
+        $return = false;
+        $c = @(file_get_contents($val['link']));
+        if (!empty($c)){    
             $d = new DomDocument();
             $d->loadHTML($c);
             $xp = new domxpath($d);
             $name_lelang = array();
             $no=1;
-            echo "<pre>";
-
             foreach ($xp->query("//table[@class='t-data-grid']//tr/td[@class='pkt_nama']/b") as $el) {
                 $name_lelang[$no]= $el;
                 $no++;
@@ -274,7 +284,7 @@ class MlpseController extends Controller
             $tahap = array();
             $no=1;
             foreach ($xp->query("//table[@class='t-data-grid']//tr/td[@class='tahap']") as $el) {
-                $tahap[$no]= $el;
+                $tahap[$no]= (!empty($sel))?$sel:'';
                 $no++;
             }
             $return['tahap'][$val['id']] = $tahap;
@@ -322,9 +332,10 @@ class MlpseController extends Controller
                             $list_tahap[$i][] = $a->nodeValue;
                         }
                     }
-                    $date_publish_[$no] = $list_tahap[2][2];
+                   
+                    $date_publish_[$no] = (isset($list_tahap[2][2]))?$list_tahap[2][2]:'';
                     foreach ($list_tahap as $thp_loop){ 
-                        if($thp_loop[1] == "Upload Dokumen Penawaran"){
+                        if($thp_loop[1] == "Download Dokumen Pengadaan" OR $thp_loop[1] == "Download Dokumen Kualifikasi"){
                             $date_start_upload_[$no] = $thp_loop[2];
                             $date_end_upload_[$no] = $thp_loop[3];
                         }
@@ -338,8 +349,6 @@ class MlpseController extends Controller
             $return['date_publish'][$val['id']] = $date_publish_;
             $return['date_start_upload'][$val['id']] = $date_start_upload_;
             $return['date_end_upload'][$val['id']] = $date_end_upload_;
-            
-            
             $pagging = array();
             $no=1;
             foreach ($xp->query("//div[@class='t-data-grid-pager']/a/@href") as $el){
@@ -347,19 +356,17 @@ class MlpseController extends Controller
                 $no++;
             }
             $return['pagging'][$val['id']] = $pagging;        
-          /*  if (!empty($return['pagging'])){
-                if (isset($url[1])){
-                    $this->pagging_data($return['pagging'], $url[1], $val['id']);                          
-                }
-            }*/
+
+            }
+            
         
         return $return;
     }
 
 protected function convert_id($date){
         $bln = explode(" ",$date);
-    
-        switch($bln[1])
+        if(!empty($bln[1])){
+            switch($bln[1])
         {
             case "Januari" : $namaBln = "01";
             break ;
@@ -390,6 +397,10 @@ protected function convert_id($date){
         }
     
         $date_new = $bln[2]."-".$namaBln.'-'.$bln[0];
+    }else{
+        $date_new = date("Y-m-d H:i:s");
+    }
+        
         $date = date("Y-m-d",strtotime($date_new))." ".preg_replace("/&#?[a-z0-9]{2,8};/i","",htmlentities($bln[3])).":"."00";
         return $date;
         

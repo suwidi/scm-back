@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
+use yii\bootstrap\Tabs;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\MLpse */
@@ -40,23 +42,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'value'=>$model->ed,
             ],
              [
-            'attribute'=>'Status',
+            'attribute'=>'Action',
             'format'=>'raw',
-            'value'=>Html::a('Update', ['grab', 'id' =>$model->id]),
+            'value'=>Html::a('Act', ['grab', 'id' =>$model->id]),
             ],
         ],
     ]) ?>
 
 </div>
-<div class="mlpse-index">
-     <?=
-     GridView::widget([
-     'dataProvider' => new ActiveDataProvider(['query' => $model->getLpseDetails()]),
-     'columns' => [
-      ['class' => 'yii\grid\SerialColumn'],
-     'name']
-        ]);
-      ?>
-     
-     
+<div>
+<?= Tabs::widget([
+    'items' => [
+        [
+            'label' => 'Profile',
+           'content'=>$this->render('../mlpse-profile/index', ['dataProvider' => new ActiveDataProvider(['query' => $model->getMLpseProfiles()]),] ),    
+            'active' => true
+        ],
+        [
+            'label' => 'Data Lelang',
+            'content' => $this->render('../lpse-detail/index', ['dataProvider' => new ActiveDataProvider(['query' => $model->getLpseDetails()]),] ),         //   'headerOptions' => [...],
+           //  'options' => ['id' => 'myveryownID'],
+        ],
+    ],
+]);
+
+?>
 </div>

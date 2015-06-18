@@ -4,18 +4,33 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\MLpseSearch */
+/* @var $model backend\models\MLpseProfileSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="mlpse-search">
+<div class="mlpse-profile-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?php echo $form->field($model, 'name') ?>
+    <?= $form->field($model, 'id') ?>
+
+    <?= $form->field($model, 'cd') ?>
+
+    <?= $form->field($model, 'cb') ?>
+
+    <?= $form->field($model, 'ed') ?>
+
+    <?= $form->field($model, 'eb') ?>
+
+    <?php // echo $form->field($model, 'lpse_id') ?>
+
+    <?php // echo $form->field($model, 'profile_id') ?>
+
+    <?php // echo $form->field($model, 'value') ?>
+
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

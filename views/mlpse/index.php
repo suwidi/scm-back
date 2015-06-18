@@ -13,12 +13,21 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="mlpse-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?=Html::beginForm(['mlpse/grab'],'post');?>    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-     //   'filterModel' => $searchModel,
-        'columns' => [
+       // 'filterModel' => $searchModel,
+        /*'beforeHeader'=>[
+          [
+                  'columns'=>[
+                      ['content'=>'Data LPSE', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                      ['content'=>'Data Update', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                  ],
+                  'options'=>['class'=>'skip-export'] // remove this row from export
+              ]
+          ],*/
+          'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
                [
                 'attribute' => 'id_lpse_inaproc',
@@ -40,10 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Status',
                 'attribute'=>'ed',
                 'format' => 'raw',
-                'value'=>'ed',
-               
-             ],
-            [
+                'value'=>'ed',               
+             ],              
+             ['class' => 'yii\grid\CheckboxColumn'  ],
+             [
                 'label' => 'Action',
               //  'attribute'=>'ed',
                 'format' => 'raw',
@@ -55,5 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
+<?=Html::submitButton('Update', ['class' => 'btn btn-info',]);?>
+<?= Html::endForm();?> 
 </div>
