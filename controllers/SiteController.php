@@ -27,7 +27,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','app'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,6 +58,10 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    public function actionApp()
+    {
+        return $this->render('app');
+    }
    
     public function actionLogin()
     {
@@ -77,7 +81,7 @@ class SiteController extends Controller
 
     public function actionLogout()
     {
-        Yii::$app->user->logout();
+        \Yii::$app->user->logout();
 
         return $this->goHome();
     }

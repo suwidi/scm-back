@@ -34,7 +34,7 @@ class MlpseController extends Controller
                         'actions' => ['logout', 'index','create','update','view','grab',],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
+                    ],                    
                 ],
             ],
             'verbs' => [
@@ -51,6 +51,7 @@ class MlpseController extends Controller
      */
     public function actionIndex()
     {
+        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
         $searchModel = new MLpseSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('index', [
@@ -66,6 +67,7 @@ class MlpseController extends Controller
      */
     public function actionView($id)
     {   
+        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -97,6 +99,7 @@ class MlpseController extends Controller
      */
     public function actionUpdate($id)
     {
+        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -116,6 +119,7 @@ class MlpseController extends Controller
      */
     public function actionDelete($id)
     {
+        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -126,7 +130,7 @@ class MlpseController extends Controller
      */
     public function actionGrab($id=0)
     {
-       
+        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
         $data_post = ($id != 0)?array('selection'=>array($id)):Yii::$app->request->post();
 
         foreach ($data_post['selection'] as $key => $lpse_id) {
@@ -218,6 +222,7 @@ class MlpseController extends Controller
      */
     protected function findModel($id)
     {
+        
         if (($model = MLpse::findOne($id)) !== null) {
             return $model;
         } else {
