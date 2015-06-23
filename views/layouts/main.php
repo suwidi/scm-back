@@ -46,7 +46,7 @@ AppAsset::register($this);
               
                 $menuItems[]=[
                     'label' => 'Apps',
-                    'url' => ['/mlpse'],
+                    'url' => ['/site/app'],
                 ];
                 $menuItems[] = [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -72,7 +72,7 @@ AppAsset::register($this);
     <footer class="footer">
         <div class="container">
         <p class="pull-left">&copy; Cubiconia.com <?= date('Y') ?></p>
-        <p class="pull-right">e:info@cubiconia.com|ph. 0811 611 5500</p>
+        <p class="pull-right">e:info@cubiconia.com | ph.0811 611 5500</p>
         </div>
     </footer>
 
