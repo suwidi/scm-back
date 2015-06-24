@@ -11,10 +11,10 @@ use common\models\User;
 use common\models\SignupForm;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
-use backend\Models\Orders;
-use backend\Models\Customers;
-use backend\Models\Customeruseapps;
-use backend\Models\OrdersSearch;
+use backend\models\Orders;
+use backend\models\Customers;
+use backend\models\Customeruseapps;
+use backend\models\OrdersSearch;
 use backend\models\CustomersSearch;
 use backend\models\CustomeruseappsSearch;
 /**
@@ -173,7 +173,7 @@ class McloudController extends Controller
         $model = new SignupForm();
         $model->username = $email;
         $model->email = $email;
-        $model->password = 'password';
+        $model->password = 'Lentie1';
         if ($user = $model->signup()) {
             return true;
             }
