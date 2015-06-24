@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
 use backend\models\Customers;
+use backend\models\Session;
 use backend\models\Customeruseapps;
 
 /**
@@ -64,16 +65,43 @@ class CloudappController extends Controller
     {
         if ( !\Yii::$app->user->can('CloudApps') ){return false; }
             if(($apps = Customeruseapps::findOne($id)) !== null){
-                \Yii::$app->session->set('username',\Yii::$app->user->identity->email);  
-                \Yii::$app->session->set('is_admin',true);  
-                \Yii::$app->session->set('companycode',$apps->companycode);  
-                \Yii::$app->session->set('appcode',$apps->orderPlan->appcode);              
-                $this->redirect("http://clouds.cubiconia.com/orchid.php/applogin/adminauth") ;
+                $ip = \Yii::$app->getRequest()->getUserIP(); // Yii::$app->request->userHost;
+                $referrer = \Yii::$app->getRequest()->getReferrer();
+                $sessionDB = new Session( [
+                            'ip' => $ip,
+                            'username' => $this->encrypt_decrypt ('enc',\Yii::$app->user->identity->email),
+                            'startdate' => date('Y-m-d H:i:s'),
+                            'isadmin' => '1',
+                            'companycode' => $apps->companycode,
+                            'appcode' => $apps->orderPlan->appcode,
+                            'referrer' => $referrer,
+                            ]);                   
+               $sessionDB->save();
+               $this->redirect("http://clouds.cubiconia.com/orchid.php/applogin/adminauth/".$this->encrypt_decrypt ('enc',\Yii::$app->user->identity->email)) ;
+
             }else{
                 return $this->goBack();
-            }            
+            }       
+        
     }  
-    
+    protected function encrypt_decrypt($action,$string) {
+        $output = false;
+        $encrypt_method = "AES-256-CBC";
+        $secret_key = 'k3';
+        $secret_iv = 'i4';
+        $key = hash('sha256', $secret_key);
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);    
+
+        if( $action == 'enc' ) {
+                $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+                $output = base64_encode($output);
+            }else if( $action == 'dec' ){
+            
+            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+        }
+
+    return $output;
+    }
     protected function findCustomer($key)
     {   
         if(is_numeric($key)){
