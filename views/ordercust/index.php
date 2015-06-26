@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
                 'email:email',
                 [
-                'attribute' => 'fullname',
+                'attribute' => 'orderapp',
                 'format' => 'raw',
                 'value'=>function ($data) {
                    return $data->appOrderplan->appname."<br><font size='1' color='red'>".$data->appOrderplan->plancaption."</font>";
