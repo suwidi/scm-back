@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'companyname',
             'orderPlan.appname',
             'orderPlan.plancaption',
+            'dbname',
             'status',
             // 'created',
             // 'creator',

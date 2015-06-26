@@ -25,14 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'label' => 'Contact',
              ],
-            'email:email',          
-           [
+                'email:email',      
+            [
                 'label' => 'Status',
                 'attribute'=>'status',
                 'format' => 'raw',
                 'value'=>function ($data) {
                     if($data->status == 'OPEN'){
-                        return Html::a('Activate',['actcust', 'id' => $data->order_id]);
+                        return Html::a('Activate',['actcust', 'id' => $data->order_id]); 
                     }else{
                         return Html::encode($data->status);
                     }
@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=>function ($data) {
                     if($data->status == 'OPEN'){
-                        return Html::a('Activate',['actcust', 'id' => $data->order_id]);
+                        return Html::a('Activate',['actapps', 'id' => $data->id]);
                     }else{
                         return Html::encode($data->status);
                     }

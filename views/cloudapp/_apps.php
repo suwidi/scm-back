@@ -36,10 +36,14 @@ use yii\grid\GridView;
                 'label' => 'Action',            
                 'format' => 'raw',
                 'value'=>function ($data) {
-                    if($data->status == 'OPEN'){
+                    if($data->status == 'ACTIVE'){
                         return Html::a('Run',['runapp', 'id' => $data->id]);
+                    }elseif($data->status == 'OPEN'){
+                        return Html::encode("Pending Activation");
+                    }elseif($data->status == 'LOCKED'){
+                        return Html::encode("Upload Payment");
                     }else{
-                        return Html::encode($data->status);
+                        return Html::encode("Unknown");
                     }
                     
                 },
