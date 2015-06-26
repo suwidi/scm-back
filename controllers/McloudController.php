@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use backend\models\Orders;
 use backend\models\Customers;
+use backend\models\MasterDatabase;
 use backend\models\Customeruseapps;
 use backend\models\OrdersSearch;
 use backend\models\CustomersSearch;
@@ -37,7 +38,7 @@ class McloudController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','ordercust','actcust','viewcust','indexcust','indexapps'],
+                        'actions' => ['logout', 'index','ordercust','actcust','actapps','viewcust','indexcust','indexapps'],
                         'allow' => true,
                         'roles' => ['@'
                              ],
@@ -99,7 +100,7 @@ class McloudController extends Controller
         $model = $this->findOrdercust($id);
 
         $customers = new Customers();
-        $customers->companycode = strtoupper(\Yii::$app->security->generateRandomString(8));
+        $customers->companycode = $this->getCompanyCode(8);
         $customers->contactname = strtoupper($model->fullname);
         $customers->email = $model->email;
         $customers->phone = $model->phonenumber;
@@ -112,16 +113,35 @@ class McloudController extends Controller
                 $apps->companyname = strtoupper($model->companyname);
                 $apps->orderplan = $model->orderplan;
                 $apps->status = 'OPEN';            
-                $apps->orderkey = $model->orderkey;
-                $apps->companycode = strtoupper(\Yii::$app->security->generateRandomString(6));
+                $apps->orderkey = $model->orderkey;   
+                $apps->companycode = $this->getCompanyCode(6);
                 if($apps->save()){
                     $model->status = "PROCESS";
                     $model->save();
                 }
-              } 
-         }
+              }
+         }else{
+            throw new NotFoundHttpException('User Exist in Central Authentication');
+        }
         return $this->redirect(['ordercust']);
     }
+    public function actionActapps($id)
+    { 
+        $model = Customeruseapps::findOne($id);
+        $dbMaster = MasterDatabase::findOne(['status'=>"AVAILABLE",'appcode'=>$model->orderPlan->appcode]);
+        if ($dbMaster !== NULL){
+             $dbMaster->status = "USED";
+             if($dbMaster->save()){            
+                    $model->status = "ACTIVE";
+                    $model->dbname = $dbMaster->dbname;
+                    $model->save();
+                }     
+        }else{
+            throw new NotFoundHttpException('Database does not exist. Please retry again after few minutes');
+        }
+          
+        return $this->redirect(['ordercust']);
+    } 
     public function actionViewcust($id)
     {   
         if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
@@ -178,6 +198,21 @@ class McloudController extends Controller
             return true;
             }
         return false;
-    }  
+    }
+    protected function getCompanyCode($lenght){
+        $result = true;
+        while ($result == true) {            
+            $key = strtoupper(substr(sha1(rand()), 0, $lenght));
+            if (Customers::findOne(['companycode'=>$key]) == null) {
+                if(Customeruseapps::findOne(['companycode'=>$key]) == null){
+                    $result = false;
+                }
+                
+            }
+        }
+        return $key;
+    }
+
+       
   
 }

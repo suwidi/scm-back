@@ -66,10 +66,12 @@ class CloudappController extends Controller
         if ( !\Yii::$app->user->can('CloudApps') ){return false; }
             if(($apps = Customeruseapps::findOne($id)) !== null){
                 $ip = \Yii::$app->getRequest()->getUserIP(); // Yii::$app->request->userHost;
+                $username = $this->encrypt_decrypt ('enc',\Yii::$app->user->identity->email);
+                // $referrer = "http://clouds.cubiconia.com/orchid.php/applogin/adminauth/".$username;
                 $referrer = \Yii::$app->getRequest()->getReferrer();
                 $sessionDB = new Session( [
                             'ip' => $ip,
-                            'username' => $this->encrypt_decrypt ('enc',\Yii::$app->user->identity->email),
+                            'username' => $username,
                             'startdate' => date('Y-m-d H:i:s'),
                             'isadmin' => '1',
                             'companycode' => $apps->companycode,
@@ -77,7 +79,7 @@ class CloudappController extends Controller
                             'referrer' => $referrer,
                             ]);                   
                $sessionDB->save();
-               $this->redirect("http://clouds.cubiconia.com/orchid.php/applogin/adminauth/".$this->encrypt_decrypt ('enc',\Yii::$app->user->identity->email)) ;
+               $this->redirect("http://clouds.cubiconia.com/orchid.php/applogin/adminauth/".$username);
 
             }else{
                 return $this->goBack();
