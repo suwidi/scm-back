@@ -25,7 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'label' => 'Contact',
              ],
-                'email:email',      
+                'email:email',
+                [
+                'attribute' => 'fullname',
+                'format' => 'raw',
+                'value'=>function ($data) {
+                   return $data->appOrderplan->appname."<br><font size='1' color='red'>".$data->appOrderplan->plancaption."</font>";
+                 },
+                'label' => 'Apps',
+             ],      
             [
                 'label' => 'Status',
                 'attribute'=>'status',
