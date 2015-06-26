@@ -94,6 +94,10 @@ class Customeruseapps extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Customers::className(), ['id' => 'customer_id']);
     }
+    public function getDbname()
+    {
+        return $this->hasOne(MasterDatabase::className(), ['dbname' => 'dbname']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
