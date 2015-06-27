@@ -144,33 +144,16 @@ class McloudController extends Controller
     } 
     public function actionViewcust($id)
     {   
-        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
+        if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         return $this->render('../customers/view', [
             'model' => $this->findCust($id),
         ]);
     }
 
-    protected function findOrdercust($id)
-    {
-        
-        if (($model = Orders::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-    protected function findCust($id)
-    {
-        
-        if (($model = Customers::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
+   
     public function actionIndexcust()
     {   
-        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
+        if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         $searchModel = new CustomersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('../customers/index', [
@@ -180,7 +163,7 @@ class McloudController extends Controller
     }
     public function actionIndexapps()
     {   
-        if (! \Yii::$app->user->can('LpseAdmin')){return FALSE; }
+        if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         $searchModel = new CustomeruseappsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('../customers-apps/index', [
@@ -211,6 +194,24 @@ class McloudController extends Controller
             }
         }
         return $key;
+    }
+     protected function findOrdercust($id)
+    {
+        
+        if (($model = Orders::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+    protected function findCust($id)
+    {
+        
+        if (($model = Customers::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
        

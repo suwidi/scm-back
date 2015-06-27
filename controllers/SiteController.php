@@ -6,6 +6,8 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\filters\VerbFilter;
+use backend\models\Customeruseapps;
+use backend\models\Orders;
 
 
 /**
@@ -55,8 +57,11 @@ class SiteController extends Controller
     }
 
     public function actionIndex()
-    {
-        return $this->render('index');
+    {   
+       $orderCust = Orders::find()->where(['status'=>'OPEN'])->count();
+       $orderApps = Customeruseapps::find()->where(['status'=>'OPEN'])->count();
+       $order = array('custs'=>$orderCust,'apps'=>$orderApps);
+       return $this->render('index',['order'=>$order]);
     }
     public function actionApp()
     {
@@ -65,7 +70,7 @@ class SiteController extends Controller
    
     public function actionLogin()
     {
-        $this->layout = 'login';
+        $this->layout = 'main-login';
 
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -86,6 +91,5 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-
    
 }
