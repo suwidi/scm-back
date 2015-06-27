@@ -25,9 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'orderkey',
-            'companycode',
-            'companyname',
+            'orderkey',          
+            [
+                'attribute' => 'companyname',
+                'format' => 'raw',
+                'value'=>function ($data) {
+                   return "<b>".$data->companycode."</b>&bull;".$data->companyname."&bull;<font size='1' color='red'>".$data->customer->contactname
+                   ."</font><br>".$data->customer->email."|".$data->customer->phone;
+                 },
+                'label' => 'Company',
+            ],
             'orderPlan.appname',
             'orderPlan.plancaption',
             'dbname',

@@ -11,8 +11,7 @@ use yii\widgets\DetailView;
 ?>
 <div class="profile-view">
     <br>
-    <p>
-        <?= Html::a('Update', ['updatecust', 'id' => $dataprovider->id], ['class' => 'btn btn-primary']) ?>        
+    <p>             
     </p>
     <?= DetailView::widget([
         'model' => $dataprovider,
