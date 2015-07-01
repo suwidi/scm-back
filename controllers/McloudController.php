@@ -38,7 +38,9 @@ class McloudController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','ordercust','actcust','actapps','viewcust','indexcust','indexapps'],
+                        'actions' => ['logout', 'index','ordercust','actcust',
+                                        'actapps','viewcust','indexcust','indexapps',
+                                        'resetcust'],
                         'allow' => true,
                         'roles' => ['@'
                              ],
