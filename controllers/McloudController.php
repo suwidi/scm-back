@@ -99,7 +99,7 @@ class McloudController extends Controller
         if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         $customer = $this->findCust($id);        
         if($this->sendEmailActivation($customer->email)){
-            return $this->goHome();
+             return $this->redirect(['ordercust']);
         }
         return FALSE;
     }   
