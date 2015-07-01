@@ -38,7 +38,7 @@ class McloudController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','ordercust','actcust',
+                        'actions' => ['logout','error' ,'index','ordercust','actcust',
                                         'actapps','viewcust','indexcust','indexapps',
                                         'resetcust'],
                         'allow' => true,
@@ -95,7 +95,7 @@ class McloudController extends Controller
              'dataProviderApp'=>$dataProviderApp,
         ]);
     } 
-    public function actionsResetcust($id){
+    public function actionResetcust($id){
         if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         $customer = $this->findCust($id);        
         if($this->sendEmailActivation($customer->email)){
