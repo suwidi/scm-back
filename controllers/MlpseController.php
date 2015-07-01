@@ -27,11 +27,11 @@ class MlpseController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['error'],
+                        'actions' => ['login'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','create','update','view','grab',],
+                        'actions' => ['logout',  'error','index','create','update','view','grab',],
                         'allow' => true,
                         'roles' => ['@'],
                     ],                    

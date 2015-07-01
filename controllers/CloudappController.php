@@ -26,7 +26,7 @@ class CloudappController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout', 'index','updatecust','runapp'],
+                        'actions' => ['logout', 'error', 'index','updatecust','runapp'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

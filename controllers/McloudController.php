@@ -97,8 +97,7 @@ class McloudController extends Controller
     public function actionActcust($id)
     {
         if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
-        $model = $this->findOrdercust($id);
-
+        $model = $this->findOrdercust($id);     
         $customers = new Customers();
         $customers->companycode = $this->getCompanyCode(8);
         $customers->contactname = strtoupper($model->fullname);
@@ -117,13 +116,16 @@ class McloudController extends Controller
                 $apps->companycode = $this->getCompanyCode(6);
                 if($apps->save()){
                     $model->status = "PROCESS";
-                    $model->save();
+                    if($this->sendEmailActivation($model->email)){
+                             if($model->save()){
+                            return $this->redirect(['ordercust']);
+                        }                           
+                    }
                 }
               }
-         }else{
-            throw new NotFoundHttpException('User Exist in Central Authentication');
-        }
-        return $this->redirect(['ordercust']);
+         }
+      throw new NotFoundHttpException('Error, Maybe User Exist in Central Authentication');
+        
     }
     public function actionActapps($id)
     { 
@@ -176,7 +178,7 @@ class McloudController extends Controller
         $model = new SignupForm();
         $model->username = $email;
         $model->email = $email;
-        $model->password = 'Lentie1';
+        $model->password = 'defaultpasswordcubiconia1';
         if ($user = $model->signup()) {
             return true;
             }
@@ -195,7 +197,8 @@ class McloudController extends Controller
         }
         return $key;
     }
-     protected function findOrdercust($id)
+    
+    protected function findOrdercust($id)
     {
         
         if (($model = Orders::findOne($id)) !== null) {
@@ -213,7 +216,33 @@ class McloudController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
+    
+    protected function sendEmailActivation($email)
+    {
+        // buat reset password dan kirim email
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'email' => $email,
+        ]);
+          $email= $user->email;
+          $admins = (array('suwidi@lentice.com','catur.bharata@cubiconia.com'));          
+        if ($user) {
+            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+                $user->generatePasswordResetToken();
+            }
+            if ($user->save()) {
+                return \Yii::$app->mailer->compose(['html' => 'activation-html', 'text' => 'activation-text'], ['user' => $user])
+                    ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
+                    ->setTo($email)
+                    ->setBcc($admins)
+                    ->setSubject('[Cubiconia] Order/User Activation')
+                    ->send();
+            }
+        }       
+        return false;
+        
+    }
        
   
 }
