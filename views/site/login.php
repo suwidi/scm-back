@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -16,8 +17,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="h-10"></div>
               <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>                
                     <div class="form-group">
-                        <?= $form->field($model, 'username') ?>
+                        <?= $form->field($model, 'username')->textInput(array('placeholder' => 'Email'));  ?>
                         <?= $form->field($model, 'password')->passwordInput() ?>
+                        <?= $form->field($model, 'captcha')->widget(Captcha::className())->label(false) ?>
                         <?= $form->field($model, 'rememberMe')->checkbox() ?>
                     </div>
                      <div style="text-align:right">                      
