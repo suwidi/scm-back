@@ -92,7 +92,15 @@ class McloudController extends Controller
              'dataProvider' => $dataProvider,
              'dataProviderApp'=>$dataProviderApp,
         ]);
-    }    
+    } 
+    public function actionsResetcust($id){
+        if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
+        $customer = $this->findCust($id);        
+        if($this->sendEmailActivation($customer->email)){
+            return $this->goHome();
+        }
+        return FALSE;
+    }   
 
     public function actionActcust($id)
     {
