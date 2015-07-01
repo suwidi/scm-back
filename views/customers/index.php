@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value'=>function ($data) {
                     if($data->status == 'ACTIVE'){
-                        return Html::encode($data->status);
+                        return Html::encode($data->status) ."|". Html::a('Reset',['resetcust', 'id' => $data->id]);;
                     }else{
                         return "Unlock";
                     }                    
