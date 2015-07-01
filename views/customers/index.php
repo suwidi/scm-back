@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="customers-index">
     <h4><?= Html::encode('Customers') ?></h4>   
+<div class="table-responsive">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -50,5 +51,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?>
-
+</div>
 </div>

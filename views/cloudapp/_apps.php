@@ -10,6 +10,7 @@ use yii\grid\GridView;
 ?>
 <div class="orders-index">
 <br>
+<div class="table-responsive">
     <?= GridView::widget([
         'dataProvider' => $dataProviderDt,
         'columns' => [
@@ -51,5 +52,5 @@ use yii\grid\GridView;
              ],
         ],
     ]); ?>
-
+</div>
 </div>

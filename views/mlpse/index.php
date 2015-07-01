@@ -13,8 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="mlpse-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+   
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?=Html::beginForm(['mlpse/grab'],'post');?>    
+    <?=Html::beginForm(['mlpse/grab'],'post');?>  
+     <div class="table-responsive">  
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
        // 'filterModel' => $searchModel,
@@ -64,6 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
             // ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    </div>
 <?=Html::submitButton('Update', ['class' => 'btn btn-info',]);?>
 <?= Html::endForm();?> 
+
 </div>

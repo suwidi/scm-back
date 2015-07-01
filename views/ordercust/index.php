@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="orders-index">
     <h4><?= Html::encode('Customers') ?></h4>   
+      <div class="table-responsive"> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
@@ -50,10 +51,11 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
         ],
     ]); ?>
-
+</div>
 </div>
 <div class="orders-index">
     <h4><?= Html::encode("Applications") ?></h4>   
+    <div class="table-responsive"> 
     <?= GridView::widget([
         'dataProvider' => $dataProviderApp,
         'columns' => [
@@ -98,5 +100,5 @@ $this->params['breadcrumbs'][] = $this->title;
              ],
         ],
     ]); ?>
-
+</div>
 </div>
