@@ -146,7 +146,7 @@ class McloudController extends Controller
              if($dbMaster->save()){            
                     $model->status = "ACTIVE";
                     $model->dbname = $dbMaster->dbname;
-                    if($model->save(){
+                    if($model->save()){
                         $this->sendEmailActivation($model->customer->email,'apps');
                     }
                 }     
