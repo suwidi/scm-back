@@ -98,7 +98,7 @@ class McloudController extends Controller
     public function actionResetcust($id){
         if (! \Yii::$app->user->can('CloudAdmin')){return FALSE; }
         $customer = $this->findCust($id);        
-        if($this->sendEmailActivation($customer->email)){
+        if($this->sendEmailActivation($customer->email,'user')){
              return $this->redirect(['ordercust']);
         }
         return FALSE;
@@ -126,7 +126,7 @@ class McloudController extends Controller
                 $apps->companycode = $this->getCompanyCode(6);
                 if($apps->save()){
                     $model->status = "PROCESS";
-                    if($this->sendEmailActivation($model->email)){
+                    if($this->sendEmailActivation($model->email,'user')){
                              if($model->save()){
                             return $this->redirect(['ordercust']);
                         }                           
@@ -146,7 +146,9 @@ class McloudController extends Controller
              if($dbMaster->save()){            
                     $model->status = "ACTIVE";
                     $model->dbname = $dbMaster->dbname;
-                    $model->save();
+                    if($model->save(){
+                        $this->sendEmailActivation($model->customer->email,'apps');
+                    }
                 }     
         }else{
             throw new NotFoundHttpException('Database does not exist. Please retry again after few minutes');
@@ -227,7 +229,7 @@ class McloudController extends Controller
         }
     }
     
-    protected function sendEmailActivation($email)
+    protected function sendEmailActivation($email,$type=null)
     {
         // buat reset password dan kirim email
         /* @var $user User */
@@ -236,19 +238,45 @@ class McloudController extends Controller
             'email' => $email,
         ]);
           $email= $user->email;
-          $admins = (array('suwidi@lentice.com','catur.bharata@cubiconia.com'));          
+          $admins = \Yii::$app->params['adminEmail'];         
         if ($user) {
-            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-                $user->generatePasswordResetToken();
-            }
-            if ($user->save()) {
-                return \Yii::$app->mailer->compose(['html' => 'activation-html', 'text' => 'activation-text'], ['user' => $user])
-                    ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
-                    ->setTo($email)
-                    ->setBcc($admins)
-                    ->setSubject('[Cubiconia] Order/User Activation')
-                    ->send();
-            }
+
+        switch ($type) {
+            case 'user':
+                   if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+                    $user->generatePasswordResetToken();
+                }
+                if ($user->save()) {
+                    return \Yii::$app->mailer->compose(['html' => 'activation-html', 'text' => 'activation-text'], ['user' => $user])
+                        ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
+                        ->setTo($email)
+                        ->setBcc($admins)
+                        ->setSubject('[Cubiconia] Order/User Activation')
+                        ->send();
+                }
+                break;
+            case 'apps':
+                    return \Yii::$app->mailer->compose(['html' => 'activation-apps-html', 'text' => 'activation-apps-text'], ['user' => $user])
+                        ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
+                        ->setTo($email)
+                        ->setBcc($admins)
+                        ->setSubject('[Cubiconia] Aktivasi Permintaan Aplikasi')
+                        ->send();
+                break;
+            case 'password':
+                    return \Yii::$app->mailer->compose(['html' => 'activation-password-html', 'text' => 'activation-password-text'], ['user' => $user])
+                        ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
+                        ->setTo($email)
+                        ->setBcc($admins)
+                        ->setSubject('[Cubiconia] Aktivasi Super Administrator')
+                        ->send();
+                break;
+            
+            default:
+                return false;
+                break;
+         }
+            
         }       
         return false;
         

@@ -11,6 +11,7 @@ use backend\models\Orders;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use common\models\SignupForm;
+use common\models\User;
 use frontend\models\ContactForm;
 
 
@@ -108,6 +109,7 @@ class SiteController extends Controller
         }
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
             Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+            $this->sendEmailActivation(\Yii::$app->user->identity->email,'password');
             return $this->redirect(['site/login']);
         }
 
@@ -115,5 +117,36 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+    protected function sendEmailActivation($email,$type=null)
+    {
+        // buat reset password dan kirim email
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'email' => $email,
+        ]);
+          $email= $user->email;
+          $admins = \Yii::$app->params['adminEmail']; 
+        if ($user) {
+
+        switch ($type) {
+            case 'password':
+                    return \Yii::$app->mailer->compose(['html' => 'activation-password-html', 'text' => 'activation-password-text'], ['user' => $user])
+                        ->setFrom([\Yii::$app->params['supportEmail'] => 'Cubiconia'])
+                        ->setTo($email)
+                        ->setBcc($admins)
+                        ->setSubject('[Cubiconia] Aktivasi Super Administrator')
+                        ->send();
+                break;            
+            default:
+                return false;
+                break;
+         }
+            
+        }       
+        return false;
+        
+    }
+
     
 }
