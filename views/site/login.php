@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-md-4 col-sm-4 col-xs-12 col-md-offset-4 company-form">
         <div class="h-10"></div>
-        <h2>Identify you here</h2>
+        <h1>Login</h1>
         <div class="h-10"></div>
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>                
             <div class="form-group">
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div style="text-align:right">                      
                 &nbsp;&nbsp;&nbsp;&nbsp;     
-                <?= Html::submitButton("<i class='fa fa-check-circle'></i>&nbsp; Identify Me!", ['class' => 'btn btn-info', 'name' => 'login-button']) ?>
+                <?= Html::submitButton("<i class='fa fa-check-circle'></i>&nbsp; Identify Me!", ['class' => 'btn btn-danger', 'name' => 'login-button']) ?>
             </div>
         <div class="h-10"></div>
         <?php ActiveForm::end(); ?>                  
