@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div style="text-align:right">                      
                 &nbsp;&nbsp;&nbsp;&nbsp;     
-                <?= Html::submitButton("<i class='fa fa-check-circle'></i>&nbsp; Identify Me!", ['class' => 'btn btn-danger', 'name' => 'login-button']) ?>
+                <?= Html::submitButton("<i class='fa fa-check-circle'></i>&nbsp; Login", ['class' => 'btn btn-danger', 'name' => 'login-button']) ?>
             </div>
         <div class="h-10"></div>
         <?php ActiveForm::end(); ?>                  

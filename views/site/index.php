@@ -6,21 +6,24 @@ $this->title = 'Dashboard';?>
             <?php  if ( \Yii::$app->user->can('LpseAdmin')){ ?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-              <div class="small-box bg-aqua">
+               <a href="?r=mlpse" class="small-box bg-aqua">
+              <div class="small-box bg-aqua">               
                 <div class="inner">
                   <h3>LPSE</h3>
                   <p>Administrasi LPSE<br>--</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
-                </div>
-                <a href="?r=mlpse" class="small-box-footer">Check. <i class="fa fa-arrow-circle-right"></i></a>                
+                </div>             
+                <div class="small-box-footer">Open<i class="fa fa-arrow-circle-right"></i></div>                
               </div>
+               </a>
             </div><!-- ./col -->
               <?php } ?>
               <?php  if ( \Yii::$app->user->can('CloudAdmin')){ ?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
+              <a href="?r=mcloud" class="small-box bg-green">
               <div class="small-box bg-green">
                 <div class="inner">
                   <h3>Cloud<sup style="font-size: 20px"></sup></h3>
@@ -31,13 +34,15 @@ $this->title = 'Dashboard';?>
                 <div class="icon">
                   <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="?r=mcloud" class="small-box-footer">Check. <i class="fa fa-arrow-circle-right"></i></a>
+                <div class="small-box-footer">Open<i class="fa fa-arrow-circle-right"></i></div>
               </div>
+            </a>
             </div><!-- ./col -->
             <?php } ?>
               <?php  if ( \Yii::$app->user->can('LpseApps')){ ?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
+              <a href="#" class="small-box bg-yellow">
               <div class="small-box bg-yellow">
                 <div class="inner">
                   <h3>LPSE Apps</h3>
@@ -46,24 +51,28 @@ $this->title = 'Dashboard';?>
                 <div class="icon">
                   <i class="ion ion-person-add"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <div class="small-box-footer">Open<i class="fa fa-arrow-circle-right"></i></div>
               </div>
+            </a>
             </div><!-- ./col -->
              <?php } ?>
               <?php  if ( \Yii::$app->user->can('CloudApps')){ ?>
             <div class="col-lg-3 col-xs-6">
               <!-- small box -->
+              <a href="?r=cloudapp" class="small-box bg-red">
               <div class="small-box bg-red">
                 <div class="inner">
-                  <h3>Cloud Apps</h3>
+                  <h3>Apps</h3>
                   <p>Access Your Clouds Apps</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="?r=cloudapp" class="small-box-footer">Check. <i class="fa fa-arrow-circle-right"></i></a>
+               <div class="small-box-footer">Open<i class="fa fa-arrow-circle-right"></i></div>
               </div>
-            </div><!-- ./col -->
+            </div>
+          </a>
+          <!-- ./col -->
              <?php } ?>
           </div><!-- /.row -->
           <!-- Main row -->
