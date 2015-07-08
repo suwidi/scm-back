@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model backend\Models\Orders */
-
+$this->title = "Profile User";
 ?>
 <div class="profile-view">
     <br>
@@ -26,4 +26,5 @@ use yii\widgets\DetailView;
         ],
     ]) 
 ?>
+<small><i>Perubah profile pergunakan menu <b>Log Out</b></i></small>
 </div>
