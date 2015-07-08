@@ -26,7 +26,7 @@ class CloudappController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['logout', 'error', 'index','updatecust','runapp'],
+                        'actions' => ['logout', 'error', 'index','updatecust','runapp','profile'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -59,6 +59,14 @@ class CloudappController extends Controller
         if ( !$auth_user->can('CloudApps') ){return false; }
         $customer = $this->findCustomer($auth_user->identity->email);    
         return $this->render('index',['dataprovider'=>$customer]);
+
+    }  
+    public function actionProfile()
+    {
+        $auth_user = \Yii::$app->user;
+       // if ( !$auth_user->can('CloudApps') ){return false; }
+        $customer = $this->findCustomer($auth_user->identity->email);    
+        return $this->render('_profile',['dataprovider'=>$customer]);
 
     }  
     public function actionRunapp($id)

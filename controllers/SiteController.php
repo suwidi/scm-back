@@ -54,13 +54,18 @@ class SiteController extends Controller
      */
     public function actions()
     {
+       $key = (string)mt_rand(100000,999999);
+       // echo $key;die;
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
-
             'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
+                 'class' => 'yii\captcha\CaptchaAction',
+                 'backColor' => '14472670',
+                 'minLength' => '4',
+                 'maxLength' => '5',
+                 //'fixedVerifyCode' => $key,
             ],
         ];
     }
