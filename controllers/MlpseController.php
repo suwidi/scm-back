@@ -289,7 +289,7 @@ class MlpseController extends Controller
             $tahap = array();
             $no=1;
             foreach ($xp->query("//table[@class='t-data-grid']//tr/td[@class='tahap']") as $el) {
-                $tahap[$no]= (!empty($sel))?$sel:'';
+                $tahap[$no]= (!empty($el))?$el:'';
                 $no++;
             }
             $return['tahap'][$val['id']] = $tahap;
