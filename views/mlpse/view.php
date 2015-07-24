@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'items' => [
         [
             'label' => 'Profile',
-           'content'=>$this->render('../mlpse-profile/index', ['dataProvider' => new ActiveDataProvider(['query' => $model->getMLpseProfiles()]),] ),    
+           'content'=>$this->render('_lpse_detail', ['dataProvider' => new ActiveDataProvider(['query' => $model->getMLpseProfiles()]),] ),    
             'active' => true
         ],
         [
