@@ -10,17 +10,20 @@ use yii\grid\GridView;
 ?>
 <div>  
     <br>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>  
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-       // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'cd',
-            'name:ntext',
-/*            'orig_lpse_id', 
-            ['class' => 'yii\grid\ActionColumn'], */
-        ],
-    ]); ?>
+     <table class="table table-bordered">
+       <tbody><tr><th>No</th><th>Nama</th><th>Aktif</th><th>Anggararan Aktif</th><th>Jumlah Lelang</th><th>Total Anggaran</th></tr>
+        <?php
+        $no=1;
+        foreach ($dataProvider->allModels as $key => $value) {
+           ?>
+           <tr><td><?=$no?></td><td><?=$value['name']?></td>
+           <td><?=$value['activetotal']?></td><td><?=$value['activebudget']?></td>
+           <td><?=$value['total']?></td><td><?=$value['budget']?></td></tr>
+        <?php
+        $no++;
+        }
+        ?>
+        
+    </tbody></table>    
 
 </div>
