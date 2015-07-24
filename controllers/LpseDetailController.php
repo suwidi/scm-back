@@ -22,7 +22,7 @@ class LpseDetailController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['normalize'],
+                        'actions' => ['normalize','index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -53,17 +53,34 @@ class LpseDetailController extends Controller
     }
     
     public function actionNormalize(){
-        $model= LpseDetail::find()->all();
+        $model= LpseDetail::find()
+                ->where(['<','budget',0])
+                ->limit(10000)
+                ->all();
         foreach ($model as $key => $value) {
-            $dataProvile = $value->lpseDetailProfiles;
-            foreach ($dataProvile as $k => $v) {
+            $dataProfile = $value->lpseDetailProfiles;
+            foreach ($dataProfile as $k => $v) {
                if($v->profile_id==1){
-                $value->last_status = $v->value;
-                $value->save();
-                echo $v->value;
-                
+                $value->last_status = $v->value;  
                }
+               if($v->profile_id==4){
+                $value->expired = $v->value;    
+               }
+               if($v->profile_id==7){
+                $budget = trim($v->value);             
+                $new_budget = explode(' ',$budget);
+                $factor = ($new_budget[1]=="M")?1000000000:1000000;
+                $number_budget = str_replace(",",".",$new_budget[0]);              
+                $budget = floatval($number_budget*$factor);
+                $value->budget = $budget;    
+               }
+               /*if($v->profile_id==11){
+                $value->category = $v->value;          
+               }  */  
             }
+            echo ".";
+            $value->save();
+           // die;
         }
 
     }
