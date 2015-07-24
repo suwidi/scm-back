@@ -64,7 +64,6 @@ class LpseDetailController extends Controller
                 
                }
             }
-             die;
         }
 
     }
