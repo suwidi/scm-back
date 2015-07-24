@@ -44,7 +44,7 @@ class LpseDetailController extends Controller
     public function actionIndex()
     {
                
-    $command = Yii::$app->db->createCommand("SELECT t2.`name`,  
+    $command = Yii::$app->db->createCommand("SELECT t1.`lpse_id`,t2.`name`,  
         SUM(IF (t1.`last_status` NOT LIKE '%Selesai',1,0)) AS 'activetotal',
         SUM(IF (t1.`last_status` NOT LIKE '%Selesai',budget,0)) AS 'activebudget',
         count(*) AS total, sum(`budget`) AS budget
