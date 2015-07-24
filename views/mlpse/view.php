@@ -55,12 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
     'items' => [
         [
             'label' => 'Profile',
-           'content'=>$this->render('_lpse_detail', ['dataProvider' => new ActiveDataProvider(['query' => $model->getMLpseProfiles()]),] ),    
+           'content'=>$this->render('../mlpse-profile/index', ['dataProvider' => new ActiveDataProvider(['query' => $model->getMLpseProfiles()]),] ),    
             'active' => true
         ],
         [
             'label' => 'Data Lelang',
-            'content' => $this->render('../lpse-detail/index', ['dataProvider' => new ActiveDataProvider(['query' => $model->getLpseDetails()]),] ),         //   'headerOptions' => [...],
+            'content' => $this->render('_lpse_detail', ['dataProvider' => new ActiveDataProvider(['query' => $model->getLpseDetails()]),] ),         //   'headerOptions' => [...],
            //  'options' => ['id' => 'myveryownID'],
         ],
     ],
