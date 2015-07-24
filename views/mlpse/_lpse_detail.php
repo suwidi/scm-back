@@ -16,10 +16,21 @@ use yii\grid\GridView;
        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'cd',
+             [
+                'label' => 'Update',
+                'attribute'=>'cd',              
+                'value'=>'cd',   
+                'contentOptions' => ['style'=>'width: 150px;'],                 
+             ],   
             'name:ntext',
-            'budget:decimal',
-            'last_status:ntext'
+            [
+                'label' => 'Nilai',
+                'attribute'=>'budget',
+                'format' => ['decimal',0],
+                'value'=>'budget',   
+                'contentOptions' => ['style'=>'text-align: right;'],                 
+             ],   
+            'last_status'
 /*            'orig_lpse_id', 
             ['class' => 'yii\grid\ActionColumn'], */
         ],
