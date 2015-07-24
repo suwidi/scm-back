@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use yii\data\ArrayDataProvider;
 /**
  * LpseDetailController implements the CRUD actions for LpseDetail model.
  */
@@ -43,18 +43,32 @@ class LpseDetailController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new LpseDetailSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        echo "data";die;
+               
+    $command = Yii::$app->db->createCommand("SELECT t2.`name`,  
+        SUM(IF (t1.`last_status` NOT LIKE '%Selesai',1,0)) AS 'activetotal',
+        SUM(IF (t1.`last_status` NOT LIKE '%Selesai',budget,0)) AS 'activebudget',
+        count(*) AS total, sum(`budget`) AS budget
+        FROM  lpse_detail t1
+        INNER JOIN m_lpse t2 ON t2.id = t1.lpse_id
+        GROUP BY t1.lpse_id");
+        $dataStatistic = $command->queryAll(); 
+        
+        // tersedia  90.000 lelang active (M) dari 9000 (M) keseluruhan lelang
+        // statistic saat ini (total, anggaran) (active, total, anggaran),(active, total, anggaran)
+        // pertumbuhan data baru tiap tanggal
+        //
+        $dataProvider = new ArrayDataProvider([
+                'allModels' => $dataStatistic,
+                
+        ]);
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
     
     public function actionNormalize(){
         $model= LpseDetail::find()
-                ->where(['<','budget',0])
+                ->where(['is','budget',null])
                 ->limit(10000)
                 ->all();
         foreach ($model as $key => $value) {
