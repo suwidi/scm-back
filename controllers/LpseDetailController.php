@@ -8,6 +8,7 @@ use backend\models\LpseDetailSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * LpseDetailController implements the CRUD actions for LpseDetail model.
@@ -17,6 +18,16 @@ class LpseDetailController extends Controller
     public function behaviors()
     {
         return [
+        'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['normalize'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -34,13 +45,29 @@ class LpseDetailController extends Controller
     {
         $searchModel = new LpseDetailSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        echo "data";die;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionNormalize(){
+        $model= LpseDetail::find()->all();
+        foreach ($model as $key => $value) {
+            $dataProvile = $value->lpseDetailProfiles;
+            foreach ($dataProvile as $k => $v) {
+               if($v->profile_id==1){
+                $value->last_status = $v->value;
+                $value->save();
+                echo $v->value;
+                
+               }
+            }
+             die;
+        }
 
+    }
     /**
      * Displays a single LpseDetail model.
      * @param integer $id

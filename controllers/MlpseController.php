@@ -323,7 +323,7 @@ class MlpseController extends Controller
                 $data = count(explode("/",$el->value));     
                 $id[$no]= explode("/",$el->value)[$data-1];
                 $url[$no]= $ur[0].'/'.$ur[1].'/'.$ur[2].$el->value;
-                    $url_tahap = str_replace("view", 'tahap',$url);
+                    $url_tahap = str_replace("view", 'tahap',$url[$no]);
                     $c_tahap = file_get_contents($url_tahap[1]);
                     $d_tahap = new DomDocument();
                     $d_tahap->loadHTML($c_tahap);
