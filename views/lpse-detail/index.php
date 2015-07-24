@@ -8,32 +8,62 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 ?>
-<div>  
-    <br>
-     <table class="table table-bordered">
-       <tbody><tr><th>No</th><th>Nama</th><th>Aktif</th><th>Anggararan Aktif</th><th>Jumlah Lelang</th><th>Total Anggaran</th></tr>
-        <?php
-        $no=1;
-        $total=0;
-        $budget=0;
-        $activetotal=0;
-        $activebudget=0;
-        foreach ($dataProvider->allModels as $key => $value) {
-           ?>
-           <tr><td><?=$no?></td><td><?=$value['name']?></td>
-           <td align='center'><?=$value['activetotal']?></td><td align='right'><?=number_format($value['activebudget'])?></td>
-           <td align='center'><?=$value['total']?></td><td align='right'><?=number_format($value['budget'])?></td></tr>
-        <?php
-        $no++; 
-        $total+=$value['total'];
-        $budget+=$value['budget'];
-        $activetotal+=$value['activetotal'];
-        $activebudget+=$value['activebudget'];
-        }
-        ?>
-    <tr><td>&nbsp;</td><td>Grand Total</td>
-           <td align='center'><?=number_format($activetotal)?></td><td align='right'><?=number_format($activebudget)?></td>
-           <td align='center'><?=number_format($total)?></td><td align='right'><?=number_format($budget)?></td></tr>    
-    </tbody></table>    
 
-</div>
+<div class="table-responsive">  
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+       // 'filterModel' => $searchModel,
+        /*'beforeHeader'=>[
+          [
+                  'columns'=>[
+                      ['content'=>'Data LPSE', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                      ['content'=>'Data Update', 'options'=>['colspan'=>3, 'class'=>'text-center warning']], 
+                  ],
+                  //'options'=>['class'=>'skip-export'] // remove this row from export
+              ]
+          ],*/
+          'columns' => [
+            ['class' => 'yii\grid\SerialColumn'], 
+            [
+                'label' => 'Lpse',
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value'=>function ($data) {
+                    return Html::a(Html::encode($data['name']),['mlpse/view', 'id' => $data['lpse_id']]);
+                  //  return Html::a(Html::encode($data->name),['view', 'id' => $data->id]);
+                },
+               // 'headerOptions' => ['style'=>'text-align:center'],
+                
+             ],
+             [
+                'label' => 'Lelang Aktif',
+                'attribute'=>'activetotal',
+                'format' => ['decimal',0],
+                'value'=>'activetotal',   
+                'contentOptions' => ['style'=>'text-align: center;'],                 
+             ],   
+             [
+                'label' => 'Nilai Aktif (Rp)',
+                'attribute'=>'activebudget',
+                'format' => ['decimal',0],
+                'value'=>'activebudget',    
+                'contentOptions' => ['style'=>'text-align: right;'],           
+             ],   
+             [
+                'label' => 'Lelang Total',
+                'attribute'=>'activetotal',
+                'format' => ['decimal',0],
+                'value'=>'activetotal',  
+                 'contentOptions' => ['style'=>'text-align: center;'],    
+             ],   
+             [
+                'label' => 'Nilai Akumulasi',
+                'attribute'=>'activebudget',
+               'format' => ['decimal',0],
+                 'contentOptions' => ['style'=>'text-align: right;'],    
+             ],                
+             
+            // ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+    </div>
