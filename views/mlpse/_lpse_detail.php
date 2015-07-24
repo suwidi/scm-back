@@ -18,7 +18,7 @@ use yii\grid\GridView;
             ['class' => 'yii\grid\SerialColumn'],
             'cd',
             'name:ntext',
-            'budget',
+            'budget:decimal',
             'last_status:ntext'
 /*            'orig_lpse_id', 
             ['class' => 'yii\grid\ActionColumn'], */
